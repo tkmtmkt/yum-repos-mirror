@@ -1,6 +1,8 @@
 #!/bin/bash
-REPOS_DIR=~/work/yum.repos
+REPOS_DIR=$(cd $(dirname $0);pwd)
 BACKUP_DIR=$REPOS_DIR/backup
+
+[ ! -d $BACKUP_DIR ] && mkdir -p $BACKUP_DIR
 
 while read REPOS
 do
