@@ -7,7 +7,7 @@ BACKUP_DIR=$REPOS_DIR/backup
 while read REPOS
 do
   NAME=$(echo $REPOS | sed -e 's/\//_/g')
-  BACKUP_SNAR=$BACKUP_DIR/backup-$NAME.snars
+  BACKUP_SNAR=$BACKUP_DIR/backup-$NAME.snar
   BACKUP_FILE=$BACKUP_DIR/backup-$NAME-`date +%Y%m%d`.tar.gz
   echo ">>> backup $NAME"
   tar -g $BACKUP_SNAR -C $REPOS_DIR -zcf $BACKUP_FILE $REPOS

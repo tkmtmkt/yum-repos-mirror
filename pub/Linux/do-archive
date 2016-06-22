@@ -1,0 +1,14 @@
+#!/bin/bash
+
+rm ./CentOS7_RPMS.7z.*
+rm -rf ./arch
+
+7z a -v1g CentOS7_RPMS.7z CentOS Fedora
+
+for f in CentOS7_RPMS.7z.*
+do
+  NUM=$(echo $f | grep -o 0..)
+  7z a -mx0 -v30m arch/$NUM/data.7z $f
+done
+
+md5sum CentOS7_RPMS.7z.* > arch/CentOS7_RPMS.md5
