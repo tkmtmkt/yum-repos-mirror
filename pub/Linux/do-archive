@@ -23,6 +23,9 @@ $src = "http://www11234ui.sakura.ne.jp/yum_repos"
 $dst = "$Env:PUBLIC\Downloads\yum_repos"
 
 cat files.txt | %{
+  $dir = Split-Path "$dst\$_"
+  if (!(Test-Path $dir)) { md -fo $dir }
+
   Start-BitsTransfer "$src/$_" "$dst\$_"
 }
 EOS
