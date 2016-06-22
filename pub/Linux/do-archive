@@ -20,7 +20,7 @@ popd
 
 cat <<'EOS' > arch/Get-yum_repos.ps1
 $src = "http://www11234ui.sakura.ne.jp/yum_repos"
-$dst = "$Env:PUBLIC\Downloads\yum_repos"
+$dst = "$Home\Downloads\yum_repos"
 
 $count = (cat files.txt).count
 $index = 1
