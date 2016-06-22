@@ -3,12 +3,26 @@
 rm ./CentOS7_RPMS.7z.*
 rm -rf ./arch
 
-7z a -v1g CentOS7_RPMS.7z CentOS Fedora
+7z a -v1g CentOS7_RPMS.7z ./CentOS ./Fedora
+chmod a+rx ./arch
 
-for f in CentOS7_RPMS.7z.*
+for f in ./CentOS7_RPMS.7z.*
 do
   NUM=$(echo $f | grep -o 0..)
-  7z a -mx0 -v30m arch/$NUM/data.7z $f
+  7z a -mx0 -v30m ./arch/$NUM/data.7z $f
 done
 
-md5sum CentOS7_RPMS.7z.* > arch/md5.txt
+md5sum ./CentOS7_RPMS.7z.* > ./arch/md5.txt
+
+pushd arch
+find . -type f | sed -e 's/^.\///' | sort | tee files.txt
+popd
+
+cat <<'EOS' > arch/Get-yum_repos.ps1
+$src = "http://www11234ui.sakura.ne.jp/yum_repos"
+$dst = "$Env:PUBLIC\Downloads\yum_repos"
+
+cat files.txt | %{
+  Start-BitsTransfer "$src/$_" "$dst\$_"
+}
+EOS
