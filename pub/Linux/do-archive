@@ -11,4 +11,4 @@ do
   7z a -mx0 -v30m arch/$NUM/data.7z $f
 done
 
-md5sum CentOS7_RPMS.7z.* > arch/CentOS7_RPMS.md5
+md5sum CentOS7_RPMS.7z.* > arch/md5.txt
