@@ -1,3 +1,16 @@
 #!/bin/bash
 
+pushd arch
+find . -type f | sed -e 's/^.\///' | sort | tee files.txt
+popd
+
+cat <<'EOS' > arch/Get-yum_repos.ps1
+$src = "http://www11234ui.sakura.ne.jp/yum_repos"
+$dst = "$Env:PUBLIC\Downloads\yum_repos"
+
+cat files.txt | %{
+  Start-BitsTransfer "$src/$_" "$dst\$_"
+}
+EOS
+
 rsync -av --delete arch/ sakura:/var/www/html/yum_repos/
