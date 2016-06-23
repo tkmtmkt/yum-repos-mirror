@@ -3,7 +3,7 @@
 rm ./CentOS7_RPMS.7z.*
 rm -rf ./arch
 
-7z a -v1g CentOS7_RPMS.7z ./CentOS ./Fedora
+7z a -v1g CentOS7_RPMS.7z ./Linux
 chmod a+rx ./arch
 
 for f in ./CentOS7_RPMS.7z.*
@@ -18,9 +18,9 @@ pushd arch
 find . -type f | sed -e 's/^.\///' | sort | tee files.txt
 popd
 
-cat <<'EOS' > arch/Get-yum_repos.ps1
-$src = "http://www11234ui.sakura.ne.jp/yum_repos"
-$dst = "$Home\Downloads\yum_repos"
+cat <<'EOS' > arch/Get-CentOS7_RPMS.ps1
+$src = "http://www11234ui.sakura.ne.jp//pub/CentOS7_RPMS"
+$dst = "$Home\Downloads\CentOS7_RPMS"
 
 $count = (cat files.txt).count
 $index = 1
