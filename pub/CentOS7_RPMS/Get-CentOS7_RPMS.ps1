@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-CentOS ãƒªãƒã‚¸ãƒˆãƒªãƒ‡ãƒ¼ã‚¿ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰
+CentOS ƒŠƒ|ƒWƒgƒŠƒf[ƒ^ƒ_ƒEƒ“ƒ[ƒh
 #>
 param(
   [Parameter(Mandatory=$true)]
