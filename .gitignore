@@ -1,4 +1,4 @@
 *.7z*
-arch/
-/Linux/CentOS
-/Linux/Fedora
+/tmp/
+/linux/
+/pub/CentOS7_RPMS/

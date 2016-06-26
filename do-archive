@@ -1,36 +1,41 @@
 #!/bin/bash
+BASE_DIR=$(cd $(dirname $0);pwd)
+HEAD="CentOS7_RPMS"
+ARCH_NAME="$HEAD_$1.7z"
+PART_DIR="$BASE_DIR/pub/$HEAD/$1"
 
-rm ./CentOS7_RPMS.7z.*
-rm -rf ./arch
+make_part() {
+  [ -d $PART_DIR ] && rm -rf $PART_DIR
+  mkdir -p $PART_DIR
+  chmod a+rx $PART_DIR
 
-7z a -v1g CentOS7_RPMS.7z ./Linux
-chmod a+rx ./arch
+  md5sum $ARCH_NAME.* | tee $PART_DIR/md5.txt
+  for f in $ARCH_NAME.*
+  do
+    NUM=$(echo $f | grep -o 0..)
+    7z a -mx0 -v50m $PART_DIR/$NUM/part.7z $f
+  done
 
-for f in ./CentOS7_RPMS.7z.*
-do
-  NUM=$(echo $f | grep -o 0..)
-  7z a -mx0 -v50m ./arch/$NUM/data.7z $f
-done
-
-md5sum ./CentOS7_RPMS.7z.* > ./arch/md5.txt
-
-pushd arch
-find . -type f | sed -e 's/^.\///' | sort | tee files.txt
-popd
-
-cat <<'EOS' > arch/Get-CentOS7_RPMS.ps1
-$src = "http://www11234ui.sakura.ne.jp//pub/CentOS7_RPMS"
-$dst = "$Home\Downloads\CentOS7_RPMS"
-
-$count = (cat files.txt).count
-$index = 1
-cat files.txt | %{
-  Write-Progress -Activity "CentOS7 RPMS" -Status "($index/$count) $_" -PercentComplete (100.0 * $index / $count)
-
-  $dir = Split-Path "$dst\$_"
-  if (!(Test-Path $dir)) { md -fo $dir }
-
-  Start-BitsTransfer "$src/$_" "$dst\$_"
-  $index++
+  pushd $PART_DIR > /dev/null
+  find . -type f | sed -e 's/^.\///' | sort | tee files.txt
+  popd > /dev/null
 }
-EOS
+
+[ -d $BASE_DIR/tmp ] && rm -rf $BASE_DIR/tmp
+mkdir -p $BASE_DIR/tmp
+
+pushd $BASE_DIR/tmp > /dev/null
+case "$1" in
+  os|updates|extras)
+    7z a -mx0 -v1g $ARCH_NAME $BASE_DIR/linux/centos/7/$1
+    make_part
+    ;;
+  epel)
+    7z a -mx0 -v1g $ARCH_NAME $BASE_DIR/linux/fedora/$1
+    make_part
+    ;;
+  *)
+    echo "Usage: $0 [os|updates|extras|epel]"
+    ;;
+esac
+popd > /dev/null

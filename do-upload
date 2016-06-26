@@ -1,3 +1,4 @@
 #!/bin/bash
+HEAD="CentOS7_RPMS"
 
-rsync -av --delete arch/ sakura:/var/www/html/pub/CentOS7_RPMS/
+rsync -av --delete ./pub/$HEAD/ sakura:/var/www/html/pub/$HEAD/
