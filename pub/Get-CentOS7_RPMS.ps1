@@ -2,12 +2,18 @@
 .SYNOPSIS
 CentOS リポジトリデータダウンロード
 #>
-$src = "http://www11234ui.sakura.ne.jp/pub/CentOS7_RPMS"
-$dst = "$Home\Downloads\CentOS7_RPMS"
+param(
+  [Parameter(Mandatory=$true)]
+  [ValidateSet("os", "updates", "extras", "epel")]
+  [string]$repos
+)
+$src = "http://www11234ui.sakura.ne.jp/pub/CentOS7_RPMS/$repos"
+$dst = "$Home\Downloads\CentOS7_RPMS/$repos"
 
-$count = (cat files.txt).count
+$list = (wget $src/files.txt).Content.Split("`r*`n")
+$count = $list.Count
 $index = 1
-cat files.txt | %{
+$list | %{
   Write-Progress -Activity "CentOS7 RPMS" -Status "($index/$count) $_" -PercentComplete (100.0 * $index / $count)
 
   $dir = Split-Path "$dst\$_"
