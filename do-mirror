@@ -13,4 +13,7 @@ case "$1" in
     echo ">>> download $REPOS"
     lftp -e "mirror --delete --only-newer -X $REPOS/debug/* /pub/$REPOS/ $REPOS_DIR/$REPOS/ && exit" $SERVER
     ;;
+  *)
+    echo "Usage: $0 [os|updates|extras|epel]"
+    ;;
 esac
